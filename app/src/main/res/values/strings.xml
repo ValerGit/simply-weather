@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="text_response">Text response</string>
+    <string name="choose_city_text">Город не выбран</string>
+    <string name="click_me_btn">Нажми чтобы выбрать город</string>
+    <string name="disable_weather_update">Отключить обновление погоды</string>
+    <string name="enable_weather_update">Включить обновление погоды</string>
+    <string name="weather_updates_enabled">Включены обновления погоды</string>
+    <string name="weather_updates_disabled">Отключены обновления погоды</string>
+    <string name="change_city">Кликни чтобы изменить город</string>
+    <string name="particular_city_weather">Погода в %s</string>
+</resources>
