@@ -9,4 +9,8 @@
     <string name="weather_updates_disabled">Отключены обновления погоды</string>
     <string name="change_city">Кликни чтобы изменить город</string>
     <string name="particular_city_weather">Погода в %s</string>
+    <string name="no_network_connectivity">There\'s no network connectivity</string>
+    <string name="offline_work">Работа в режиме оффлайн</string>
+    <string name="check_internet_connection">Проверьте подключение к интернету.</string>
+    <string name="no_network_connect">There\'s no network connectivity</string>
 </resources>

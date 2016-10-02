@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:screenOrientation="portrait"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -53,6 +54,20 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+
+    <TextView
+        android:id="@+id/internet_disabled"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="#d50000"
+        android:textStyle="bold"
+        android:text="@string/offline_work"
         android:visibility="gone"/>
 
 </LinearLayout>

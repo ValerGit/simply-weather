@@ -19,17 +19,21 @@ public class WeatherIntentService extends IntentService {
     public static final String ACTION_NEW_CITY_WEATHER = "action.NEW_CITY_WEATHER";
     public static final String ACTION_UPDATE_CITY_WEATHER = "action.UPDATE_CITY_WEATHER";
     public static final String ACTION_STOP_UPDATE_CITY_WEATHER = "action.STOP_UPDATE_CITY_WEATHER";
+    public static final String ACTION_DISABLE_ALL= "action.DISABLE_ALL";
+    public static final String ACTION_ENABLE_ALL= "action.ENABLE_ALL";
+    public static final String ACTION_NO_INTERNET = "action.NO_INTERNET";
+    public static final String ACTION_INTERNET_EXIST = "action.INTERNET_OK";
 
     public final static String EXTRA_WEATHER= "extra.WEATHER";
     public final static String EXTRA_CITY_NAME= "extra.CITY_NAME";
 
     private WeatherStorage weatherStorage;
     private WeatherUtils weatherUtils;
+    private boolean updatesEnabled = false;
 
     public WeatherIntentService() {
         super("WeatherIntentService");
     }
-
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -37,30 +41,62 @@ public class WeatherIntentService extends IntentService {
             weatherStorage = WeatherStorage.getInstance(WeatherIntentService.this);
             weatherUtils = WeatherUtils.getInstance();
             final String action = intent.getAction();
-            switch (action){
+            switch (action) {
                 case ACTION_NEW_CITY_WEATHER: {
                     this.handleActionNewWeather();
                     break;
                 }
                 case ACTION_UPDATE_CITY_WEATHER: {
-                    this.handleUpdateWeather();
+                    this.handleUpdateWeather(true);
                     break;
                 }
                 case ACTION_STOP_UPDATE_CITY_WEATHER: {
-                    handleStopUpdateWeather();
+                    handleStopUpdateWeather(true);
+                    break;
+                }
+                case ACTION_NO_INTERNET: {
+                    handleNoInternet();
+                    break;
+                }
+                case ACTION_INTERNET_EXIST: {
+                    handleInternet();
                     break;
                 }
             }
         }
     }
 
-    private void handleUpdateWeather() {
+    private void handleNoInternet() {
+        if (updatesEnabled) {
+            handleStopUpdateWeather(false);
+        }
+        final Intent intent = new Intent(this, WeatherIntentService.class);
+        intent.setAction(WeatherIntentService.ACTION_DISABLE_ALL);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void handleInternet() {
+        if (updatesEnabled) {
+            handleUpdateWeather(false);
+        }
+        final Intent intent = new Intent(this, WeatherIntentService.class);
+        intent.setAction(WeatherIntentService.ACTION_ENABLE_ALL);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void handleUpdateWeather(Boolean changeEnabledFlag) {
+        if (changeEnabledFlag) {
+            updatesEnabled = true;
+        }
         final Intent intent = new Intent(this, WeatherIntentService.class);
         intent.setAction(WeatherIntentService.ACTION_NEW_CITY_WEATHER);
         weatherUtils.schedule(this, intent);
     }
 
-    private void handleStopUpdateWeather() {
+    private void handleStopUpdateWeather(Boolean changeEnabledFlag) {
+        if (changeEnabledFlag) {
+            updatesEnabled = false;
+        }
         final Intent intent = new Intent(this, WeatherIntentService.class);
         intent.setAction(WeatherIntentService.ACTION_NEW_CITY_WEATHER);
         weatherUtils.unschedule(this, intent);
